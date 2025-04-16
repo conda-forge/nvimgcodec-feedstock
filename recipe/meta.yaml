@@ -26,7 +26,7 @@ source:
     - patches/0002-BLD-Move-CMake-config-install-directory.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [cuda_compiler_version in (undefined, 'None')]
   # Debug skips below
   # skip: true  # [py != 312]
