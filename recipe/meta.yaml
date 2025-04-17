@@ -43,6 +43,7 @@ build:
     - libtiff
   missing_dso_whitelist:
     - '*/libcuda.so.*'  # [linux]
+    - '*/nvcuda.dll'  # [win]
 requirements:
   build:
     - {{ compiler('c') }}
