@@ -51,8 +51,10 @@ requirements:
     - {{ stdlib('c') }}
   # The python build requires CMake>=3.19 because of find_package syntax in cmake/Utils.cmake - @carterbox Jan 2025
     - cmake >=3.19
+    - cross-python_{{ target_platform }}    # [build_platform != target_platform]
     - ninja
     - pkg-config
+    - python                                # [build_platform != target_platform]
     - python-clang  # [not win]
   host:
     - cuda-version {{ cuda_compiler_version }}
