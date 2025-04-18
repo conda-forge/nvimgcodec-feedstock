@@ -26,8 +26,9 @@ source:
     - patches/0002-BLD-Move-CMake-config-install-directory.patch
 
 build:
-  number: 0
-  skip: true  # [cuda_compiler_version in (undefined, 'None')]
+  number: 1
+  # FIXME: @carterbox Win CTK11 skipped because libnvimgcodec not available
+  skip: true  # [cuda_compiler_version in (undefined, 'None') or (win and cuda_compiler_version.startswith('11'))]
   # Debug skips below
   # skip: true  # [py != 312]
   # skip: true  # [cuda_compiler_version != '12.0']
@@ -42,6 +43,7 @@ build:
     - libtiff
   missing_dso_whitelist:
     - '*/libcuda.so.*'  # [linux]
+    - '*/nvcuda.dll'  # [win]
 requirements:
   build:
     - {{ compiler('c') }}
@@ -50,8 +52,10 @@ requirements:
     - {{ stdlib('c') }}
   # The python build requires CMake>=3.19 because of find_package syntax in cmake/Utils.cmake - @carterbox Jan 2025
     - cmake >=3.19
+    - cross-python_{{ target_platform }}    # [build_platform != target_platform]
     - ninja
     - pkg-config
+    - python                                # [build_platform != target_platform]
     - python-clang  # [not win]
   host:
     - cuda-version {{ cuda_compiler_version }}
