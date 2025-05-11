@@ -50,3 +50,15 @@ cmake --install . --strip
 
 $PYTHON -m pip install --no-deps --no-build-isolation -v $SRC_DIR/build/python
 
+# When cross-compiling, the python modules are named incorrectly, so we have to
+# fix the name.
+if [[ "$target_platform" != "$build_platform" ]]; then
+  for file in "${SP_DIR}"/nvidia/nvimgcodec/*cpython-*-x86_64-linux-gnu.so; do
+    newname="${file/x86_64/aarch64}"
+    mv "$file" "$newname"
+    echo "Renamed: $file → $newname"
+  done
+fi
+
+# Just double checking that binaries target correct arch
+file ${SP_DIR}/nvidia/nvimgcodec/*.so
