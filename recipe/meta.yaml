@@ -57,7 +57,7 @@ requirements:
     - pkg-config
     - python                                # [build_platform != target_platform]
     - python-clang  # [not win]
-    - file
+    - file  # [linux]
   host:
     - cuda-version {{ cuda_compiler_version }}
     {% if cuda_major == 12 %}
