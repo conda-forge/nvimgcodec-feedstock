@@ -1,5 +1,5 @@
 c_compiler:
-- vs2019
+- vs2022
 c_stdlib:
 - vs
 channel_sources:
@@ -11,9 +11,9 @@ cuda_compiler:
 cuda_compiler_version:
 - '12.6'
 cxx_compiler:
-- vs2019
+- vs2022
 libboost_headers:
-- '1.86'
+- '1.88'
 libjpeg_turbo:
 - '3'
 libtiff:
@@ -23,12 +23,9 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.12.* *_cpython
+- 3.13.* *_cp313
 target_platform:
 - win-64
-zip_keys:
-- - cuda_compiler
-  - cuda_compiler_version
 zlib:
 - '1'
 zstd:
