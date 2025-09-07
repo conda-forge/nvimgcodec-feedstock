@@ -26,7 +26,7 @@ source:
     - patches/0002-BLD-Move-CMake-config-install-directory.patch
 
 build:
-  number: 2
+  number: 3
   # FIXME: @carterbox Win CTK11 skipped because libnvimgcodec not available
   skip: true  # [cuda_compiler_version in (undefined, 'None') or (win and cuda_compiler_version.startswith('11'))]
   # Debug skips below
