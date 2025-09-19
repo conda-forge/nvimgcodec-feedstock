@@ -28,7 +28,6 @@ source:
 
 build:
   number: 0
-  # FIXME: @carterbox Win CTK11 skipped because libnvimgcodec not available
   skip: true  # [cuda_compiler_version in (undefined, 'None')]
   # Debug skips below
   # skip: true  # [py != 312]
