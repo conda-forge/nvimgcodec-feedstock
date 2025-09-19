@@ -25,6 +25,7 @@ source:
     - patches/0001-BLD-Use-only-dynamic-shared-library-links-to-CUDA-ta.patch
     - patches/0002-BLD-Move-CMake-config-install-directory.patch
     - patches/0003-BLD-Make-find_package-OpenCV-verbose-and-required.patch
+    - patches/0004-BLD-Disable-non-standard-CUDA-arch-checking.patch
 
 build:
   number: 0
