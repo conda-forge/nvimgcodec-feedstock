@@ -15,7 +15,8 @@
 
 set -ex
 
-export CUDAARCHS="50"
+# To speed-up debugging, build for one arch
+# export CUDAARCHS="50"
 
 mkdir build
 cd build

@@ -10,7 +10,8 @@ cd build
 
 if errorlevel 1 exit 1
 
-set CUDAARCHS=50
+:: To speed-up debugging, build for one arch
+:: set CUDAARCHS=50
 
 set NVIMG_BUILD_ARGS= ^
     -DBUILD_DOCS:BOOL=OFF ^

@@ -11,8 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-{% set version = '0.5.0' %}
-{% set cuda_major = environ.get("cuda_compiler_version", "11.8").split(".")[0]|int %}
+{% set version = "0.6.0" %}
 
 package:
   name: nvimgcodec
@@ -20,18 +19,19 @@ package:
 
 source:
   url: https://github.com/NVIDIA/nvImageCodec/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: bca65e817db45edcc86b57cc980d7ad122b3eef167b5cfc4a0e20e8e24c2226f
+  sha256: b79e2fe1693656e81078a95c17b512be96e58e8a2b93e4b8bc85112c4da85e7e
   patches:
     - patches/0001-BLD-Use-only-dynamic-shared-library-links-to-CUDA-ta.patch
     - patches/0002-BLD-Move-CMake-config-install-directory.patch
+    - patches/0003-BLD-Make-find_package-OpenCV-verbose-and-required.patch
+    - patches/0004-BLD-Disable-non-standard-CUDA-arch-checking.patch
 
 build:
-  number: 2
-  # FIXME: @carterbox Win CTK11 skipped because libnvimgcodec not available
-  skip: true  # [cuda_compiler_version in (undefined, 'None') or (win and cuda_compiler_version.startswith('11'))]
+  number: 0
+  skip: true  # [cuda_compiler_version in (undefined, 'None')]
   # Debug skips below
   # skip: true  # [py != 312]
-  # skip: true  # [cuda_compiler_version != '12.0']
+  # skip: true  # [cuda_compiler_version != '12.9']
   ignore_run_exports:
     # Implement enhanced CUDA compatability
     - cuda-version
@@ -60,10 +60,8 @@ requirements:
     - file  # [linux]
   host:
     - cuda-version {{ cuda_compiler_version }}
-    {% if cuda_major == 12 %}
     - cuda-cudart-dev
     - libnvjpeg-dev
-    {% endif %}
     - dlpack
     - libboost-headers
     - libjpeg-turbo
@@ -96,8 +94,7 @@ about:
   home: https://github.com/NVIDIA/nvImageCodec
   summary: The Python API for nvImageCodec.
   description: >
-    nvImageCodec is an open-source library of accelerated codecs with unified interface.
-    This package is the Python-API only. See libnvimgcodec-dev for the C-API.
+    nvImageCodec is an open-source library of accelerated codecs with unified interface. This package is the Python-API only. See libnvimgcodec-dev for the C-API.
   license: Apache-2.0
   license_family: APACHE
   license_file:

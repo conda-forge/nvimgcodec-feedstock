@@ -1,7 +1,7 @@
-From 0eb9e517a12e8358228081436403b6e66a2d3fa0 Mon Sep 17 00:00:00 2001
+From 6b144413ecd010e84af44a3e7be42cdf4c6dd2ec Mon Sep 17 00:00:00 2001
 From: Daniel Ching <dching@nvidia.com>
 Date: Tue, 4 Feb 2025 13:06:52 -0600
-Subject: [PATCH 1/2] BLD: Use only dynamic (shared library) links to CUDA
+Subject: [PATCH 1/3] BLD: Use only dynamic (shared library) links to CUDA
  targets
 
 ---
@@ -15,32 +15,32 @@ Subject: [PATCH 1/2] BLD: Use only dynamic (shared library) links to CUDA
  7 files changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index cf847cb..951fc69 100644
+index 557bc32b..f4e1478b 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
-@@ -48,7 +48,7 @@ include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/external/dlpack/include)
- # Linking with static nvjpeg2k until there is a python package for it
- if (BUILD_NVJPEG2K_EXT)
-     if (NOT WITH_DYNAMIC_NVJPEG2K)
--        CUDA_find_library(NVJPEG2K_LIBRARY nvjpeg2k_static)
-+        CUDA_find_library(NVJPEG2K_LIBRARY nvjpeg2k)
-         if (${NVJPEG2K_LIBRARY} STREQUAL "NVJPEG2K_LIBRARY-NOTFOUND")
-             message(WARNING "nvjpeg2k not found - disabled")
-             set(BUILD_NVJPEG2K_EXT OFF CACHE BOOL INTERNAL)
-@@ -105,7 +105,7 @@ if (BUILD_NVTIFF_EXT)
-                 ${nvtiff_SEARCH_PATH}
-         )
+@@ -62,7 +62,7 @@ if (BUILD_NVJPEG2K_EXT)
+         set(NVJPEG2K_SEARCH_PATHS "${nvjpeg2k_headers_SOURCE_DIR}/include")
      else()
+         set(NVJPEG2K_SEARCH_PATHS ${CTK_SEARCH_PATHS})
+-        find_library(NVJPEG2K_LIBRARY nvjpeg2k_static PATH_SUFFIXES lib lib64)
++        find_library(NVJPEG2K_LIBRARY nvjpeg2k PATH_SUFFIXES lib lib64)
+         if(NVJPEG2K_LIBRARY)
+             message(STATUS "Found nvJPEG2k: ${NVJPEG2K_LIBRARY}")
+         else()
+@@ -100,7 +100,7 @@ if (BUILD_NVTIFF_EXT)
+         set(NVTIFF_SEARCH_PATHS "${nvtiff_headers_SOURCE_DIR}/include")
+     else()
+         set(NVTIFF_SEARCH_PATHS ${CTK_SEARCH_PATHS})
 -        find_library(NVTIFF_LIB nvtiff_static PATH_SUFFIXES lib lib64)
 +        find_library(NVTIFF_LIB nvtiff PATH_SUFFIXES lib lib64)
-         if(NOT NVTIFF_LIB)
-             message(WARNING, "nvTIFF library not found. Disabling its extensions and tests build.")
-             set(BUILD_NVTIFF_EXT OFF CACHE BOOL INTERNAL)
+         if(NVTIFF_LIB)
+             message(STATUS "Found nvTIFF: ${NVTIFF_LIB}")
+         else()
 diff --git a/extensions/nvjpeg/CMakeLists.txt b/extensions/nvjpeg/CMakeLists.txt
-index d1b90b7..5162700 100644
+index 04b52564..70695faf 100644
 --- a/extensions/nvjpeg/CMakeLists.txt
 +++ b/extensions/nvjpeg/CMakeLists.txt
-@@ -66,14 +66,14 @@ endif()
+@@ -79,14 +79,14 @@ endif()
  if(NOT WITH_DYNAMIC_NVJPEG)
    if(UNIX)
      target_link_libraries(${EXT_LIBRARY_NAME}
@@ -59,10 +59,10 @@ index d1b90b7..5162700 100644
      PRIVATE "-Wl,--exclude-libs,$<TARGET_FILE_NAME:dynlink_nvjpeg>")
  endif()
 diff --git a/extensions/nvjpeg2k/CMakeLists.txt b/extensions/nvjpeg2k/CMakeLists.txt
-index a231c58..4e82e15 100644
+index 903cbdf7..799fb801 100644
 --- a/extensions/nvjpeg2k/CMakeLists.txt
 +++ b/extensions/nvjpeg2k/CMakeLists.txt
-@@ -45,7 +45,7 @@ else()
+@@ -55,7 +55,7 @@ else()
  endif()
  
  target_link_libraries(${EXT_LIBRARY_NAME} PUBLIC
@@ -72,10 +72,10 @@ index a231c58..4e82e15 100644
  if(UNIX)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fPIC -fvisibility=hidden -Wl,--exclude-libs,ALL")
 diff --git a/extensions/nvtiff/CMakeLists.txt b/extensions/nvtiff/CMakeLists.txt
-index cd4d353..0d36c53 100644
+index 2ee4ef3b..a4f91d38 100644
 --- a/extensions/nvtiff/CMakeLists.txt
 +++ b/extensions/nvtiff/CMakeLists.txt
-@@ -40,7 +40,7 @@ endif()
+@@ -51,7 +51,7 @@ endif()
  
  if(NOT WITH_DYNAMIC_NVJPEG)
    if(UNIX)
@@ -84,7 +84,7 @@ index cd4d353..0d36c53 100644
    else()
      target_link_libraries(${EXT_LIBRARY_NAME} PUBLIC CUDA::nvjpeg)
    endif()
-@@ -49,7 +49,7 @@ else()
+@@ -60,7 +60,7 @@ else()
    target_link_libraries(${EXT_LIBRARY_NAME} PRIVATE "-Wl,--exclude-libs,$<TARGET_FILE_NAME:dynlink_nvjpeg>")
  endif()
  
@@ -94,10 +94,10 @@ index cd4d353..0d36c53 100644
  if (UNIX)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fPIC -fvisibility=hidden -Wl,--exclude-libs,ALL")
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index 7f5925f..f037ae5 100644
+index ddbcba54..a6ced000 100644
 --- a/python/CMakeLists.txt
 +++ b/python/CMakeLists.txt
-@@ -69,7 +69,7 @@ build_per_python_lib(nvimgcodec_python
+@@ -73,7 +73,7 @@ build_per_python_lib(nvimgcodec_python
      OUTPUT_NAME nvimgcodec_impl
      OUTPUT_DIR ${PY_NVIMGCODEC_IMPL_OUTPUT_DIR}
      PUBLIC_LIBS nvimgcodec
@@ -107,10 +107,10 @@ index 7f5925f..f037ae5 100644
  
  # Setup wheel depependencies
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 9558804..5f7c3ec 100644
+index 3f59c8e7..7722d71b 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -76,7 +76,7 @@ else()
+@@ -137,7 +137,7 @@ else()
      set(CUDA_DRIVER_LIB CUDA::cuda_driver)
  endif()
  
@@ -120,10 +120,10 @@ index 9558804..5f7c3ec 100644
  if(UNIX)
      # CXX flags
 diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
-index c6d764a..c3046eb 100644
+index 3dbc8ff2..e5f21d2f 100644
 --- a/test/CMakeLists.txt
 +++ b/test/CMakeLists.txt
-@@ -122,7 +122,7 @@ foreach(testapp nvimgcodec_tests)
+@@ -152,7 +152,7 @@ foreach(testapp nvimgcodec_tests)
      if (WITH_DYNAMIC_NVJPEG)
          list(APPEND TARGET_LIBS dynlink_nvjpeg)
      else()
@@ -132,7 +132,7 @@ index c6d764a..c3046eb 100644
      endif()
  
      if (BUILD_NVJPEG2K_EXT)
-@@ -175,7 +175,7 @@ foreach(testapp nvimgcodec_tests)
+@@ -205,7 +205,7 @@ foreach(testapp nvimgcodec_tests)
      target_link_libraries(${testapp} PUBLIC
          ${TARGET_LIBS}
          ${OpenCV_LIBRARIES}
@@ -142,5 +142,5 @@ index c6d764a..c3046eb 100644
          gtest
          gmock
 -- 
-2.47.1
+2.49.0
 

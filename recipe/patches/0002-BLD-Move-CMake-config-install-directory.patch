@@ -1,17 +1,17 @@
-From e738c7384002d206c48daefbfdcc46c541fa5363 Mon Sep 17 00:00:00 2001
+From 2f684dd0911713121135f49ed26ecea228e329c1 Mon Sep 17 00:00:00 2001
 From: Daniel Ching <dching@nvidia.com>
 Date: Tue, 4 Feb 2025 17:33:47 -0600
-Subject: [PATCH 2/2] BLD: Move CMake config install directory
+Subject: [PATCH 2/3] BLD: Move CMake config install directory
 
 ---
  src/CMakeLists.txt | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 5f7c3ec..0ed8ffe 100644
+index 7722d71b..d8af2886 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -121,7 +121,7 @@ endif()
+@@ -182,7 +182,7 @@ endif()
  #   * <prefix>/cmake/
  #   * <prefix>/lib*/
  #   * <prefix>/include/
@@ -20,7 +20,7 @@ index 5f7c3ec..0ed8ffe 100644
  
  set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
  
-@@ -173,7 +173,7 @@ install(
+@@ -234,7 +234,7 @@ install(
  #   * <prefix>/cmake/nvimgcodec/nvimgcodecConfigVersion.cmake
  install(
      FILES "${project_config}" "${version_config}"
@@ -29,7 +29,7 @@ index 5f7c3ec..0ed8ffe 100644
      COMPONENT lib
  )
  
-@@ -182,7 +182,7 @@ install(
+@@ -243,7 +243,7 @@ install(
  install(
      EXPORT "${TARGETS_EXPORT_NAME}"
      NAMESPACE "${namespace}"
@@ -39,5 +39,5 @@ index 5f7c3ec..0ed8ffe 100644
  )
  
 -- 
-2.47.1
+2.49.0
 
