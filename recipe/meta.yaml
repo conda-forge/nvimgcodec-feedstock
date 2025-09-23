@@ -27,7 +27,7 @@ source:
     - patches/0004-BLD-Disable-non-standard-CUDA-arch-checking.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [cuda_compiler_version in (undefined, 'None')]
   # Debug skips below
   # skip: true  # [py != 312]
