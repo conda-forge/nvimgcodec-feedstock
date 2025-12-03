@@ -1,0 +1,25 @@
+From 3f8046d9bee9a2258eb8d0ad04f8e60f149ad3b5 Mon Sep 17 00:00:00 2001
+From: Daniel Ching <dching@nvidia.com>
+Date: Wed, 3 Dec 2025 12:59:52 -0600
+Subject: [PATCH] BUG: Skip runtime nvtiff check when linking at build time
+
+---
+ extensions/nvtiff/cuda_decoder.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/extensions/nvtiff/cuda_decoder.cpp b/extensions/nvtiff/cuda_decoder.cpp
+index 2b98e754..ecd02b7b 100644
+--- a/extensions/nvtiff/cuda_decoder.cpp
++++ b/extensions/nvtiff/cuda_decoder.cpp
+@@ -256,7 +256,7 @@ Decoder::Decoder(const char* plugin_id, const nvimgcodecFrameworkDesc_t* framewo
+     : plugin_id_(plugin_id)
+     , framework_(framework)
+     , exec_params_(exec_params)
+-    , nvtiffDecodeImageExAvailable_(nvtiffIsSymbolAvailable("nvtiffDecodeImageEx"))
++    , nvtiffDecodeImageExAvailable_(true)
+ {
+     auto executor = exec_params_->executor;
+     int num_threads = executor->getNumThreads(executor->instance);
+-- 
+2.47.1.windows.2
+
