@@ -1,4 +1,4 @@
-#! bash
+#!/bin/bash
 # Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +17,20 @@ set -ex
 
 # To speed-up debugging, build for one arch
 # export CUDAARCHS="50"
+
+# nvimagecodec has a custom wheel building logic instead of using standard tools, so we have
+# to set these environment variables in order for the wheel metadata to be correct when
+# cross-compiling
+if [[ "$target_platform" == "linux-64" ]]; then
+        export ARCH=${ARCH:-x86_64}
+        export WHL_PLATFORM_NAME=${WHL_PLATFORM_NAME:-manylinux_${c_stdlib_version//./_}_${ARCH}}
+elif [[ "$target_platform" == "linux-aarch64" ]]; then
+        export ARCH=${ARCH:-aarch64}
+        export WHL_PLATFORM_NAME=${WHL_PLATFORM_NAME:-manylinux_${c_stdlib_version//./_}_${ARCH}}
+else
+    echo ""$target_platform" is an unknown target_platform!"
+    exit 1
+fi
 
 mkdir build
 cd build
@@ -41,25 +55,27 @@ nvimg_build_args=(
     -DNVIMGCODEC_COPY_LIBS_TO_PYTHON_DIR:BOOL=OFF
     -DNVIMGCODEC_BUILD_PYBIND11:BOOL=OFF
     -DNVIMGCODEC_BUILD_DLPACK:BOOL=OFF
+    -DARCH="${ARCH}"
+    -DNVIMGCODEC_WHL_PLATFORM_NAME="${WHL_PLATFORM_NAME}"
 )
 
 cmake ${CMAKE_ARGS} -GNinja "${nvimg_build_args[@]}" ${SRC_DIR}
 
-cmake --build .
+cmake --build . --verbose
 
 cmake --install . --strip
 
-$PYTHON -m pip install --no-deps --no-build-isolation -v $SRC_DIR/build/python
-
 # When cross-compiling, the python modules are named incorrectly, so we have to
 # fix the name.
-if [[ "$target_platform" != "$build_platform" ]]; then
-  for file in "${SP_DIR}"/nvidia/nvimgcodec/*cpython-*-x86_64-linux-gnu.so; do
+if [[ "$target_platform" == "linux-aarch64" ]]; then
+  for file in "${SRC_DIR}"/build/python/nvidia/nvimgcodec/*cpython-*-x86_64-linux-gnu.so; do
     newname="${file/x86_64/aarch64}"
     mv "$file" "$newname"
     echo "Renamed: $file → $newname"
   done
 fi
+
+$PYTHON -m pip install --no-deps --no-build-isolation -v $SRC_DIR/build/python
 
 # Just double checking that binaries target correct arch
 file ${SP_DIR}/nvidia/nvimgcodec/*.so
