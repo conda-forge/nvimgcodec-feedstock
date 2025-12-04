@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-{% set version = "0.6.0" %}
+{% set version = "0.7.0" %}
 
 package:
   name: nvimgcodec
@@ -19,15 +19,16 @@ package:
 
 source:
   url: https://github.com/NVIDIA/nvImageCodec/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: b79e2fe1693656e81078a95c17b512be96e58e8a2b93e4b8bc85112c4da85e7e
+  sha256: a5ee0c3756ec6425e0bd9c879d7c3b06a7b3e4fb4ed13491ec202e56be317d92
   patches:
     - patches/0001-BLD-Use-only-dynamic-shared-library-links-to-CUDA-ta.patch
     - patches/0002-BLD-Move-CMake-config-install-directory.patch
     - patches/0003-BLD-Make-find_package-OpenCV-verbose-and-required.patch
     - patches/0004-BLD-Disable-non-standard-CUDA-arch-checking.patch
+    - patches/0005-BUG-Skip-runtime-nvtiff-check-when-linking-at-build-.patch
 
 build:
-  number: 1
+  number: 0
   skip: true  # [cuda_compiler_version in (undefined, 'None')]
   # Debug skips below
   # skip: true  # [py != 312]
@@ -85,7 +86,7 @@ test:
     - libnvimgcodec-libopencv-ext
     - libnvimgcodec-libtiff-ext
   commands:
-    - pip check
+    - pip check  # [build_platform == target_platform]
     # - PYNVIMGCODEC_VERBOSITY=5 python -c "import nvidia.nvimgcodec"  # [linux]
     # - set PYNVIMGCODEC_VERBOSITY=5 && python -c "import nvidia.nvimgcodec"  # [win]
 
