@@ -28,7 +28,7 @@ source:
     - patches/0005-BUG-Skip-runtime-nvtiff-check-when-linking-at-build-.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [cuda_compiler_version in (undefined, 'None')]
   # Debug skips below
   # skip: true  # [py != 312]
@@ -86,7 +86,7 @@ test:
     - libnvimgcodec-libopencv-ext
     - libnvimgcodec-libtiff-ext
   commands:
-    - pip check  # [build_platform == target_platform]
+    - pip check
     # - PYNVIMGCODEC_VERBOSITY=5 python -c "import nvidia.nvimgcodec"  # [linux]
     # - set PYNVIMGCODEC_VERBOSITY=5 && python -c "import nvidia.nvimgcodec"  # [win]
 
