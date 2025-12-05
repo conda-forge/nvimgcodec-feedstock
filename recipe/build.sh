@@ -22,13 +22,13 @@ set -ex
 # to set these environment variables in order for the wheel metadata to be correct when
 # cross-compiling
 if [[ "$target_platform" == "linux-64" ]]; then
-        export ARCH=${ARCH:-x86_64}
-        export WHL_PLATFORM_NAME=${WHL_PLATFORM_NAME:-manylinux_${c_stdlib_version//./_}_${ARCH}}
+        export ARCH="x86_64"
+        export WHL_PLATFORM_NAME="manylinux_${c_stdlib_version//./_}_${ARCH}"
 elif [[ "$target_platform" == "linux-aarch64" ]]; then
-        export ARCH=${ARCH:-aarch64}
-        export WHL_PLATFORM_NAME=${WHL_PLATFORM_NAME:-manylinux_${c_stdlib_version//./_}_${ARCH}}
+        export ARCH="aarch64"
+        export WHL_PLATFORM_NAME="manylinux_${c_stdlib_version//./_}_${ARCH}"
 else
-    echo ""$target_platform" is an unknown target_platform!"
+    echo "$target_platform is an unknown target_platform!"
     exit 1
 fi
 
