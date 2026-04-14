@@ -1,25 +1,27 @@
-From 3f8046d9bee9a2258eb8d0ad04f8e60f149ad3b5 Mon Sep 17 00:00:00 2001
+From 84dce5d83992c8879c7b16d928d69fcb6e985da6 Mon Sep 17 00:00:00 2001
 From: Daniel Ching <dching@nvidia.com>
-Date: Wed, 3 Dec 2025 12:59:52 -0600
+Date: Tue, 14 Apr 2026 12:01:03 -0500
 Subject: [PATCH] BUG: Skip runtime nvtiff check when linking at build time
 
 ---
- extensions/nvtiff/cuda_decoder.cpp | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ extensions/nvtiff/cuda_decoder.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/extensions/nvtiff/cuda_decoder.cpp b/extensions/nvtiff/cuda_decoder.cpp
-index 2b98e754..ecd02b7b 100644
+index 599725c1..68f4e4c8 100644
 --- a/extensions/nvtiff/cuda_decoder.cpp
 +++ b/extensions/nvtiff/cuda_decoder.cpp
-@@ -256,7 +256,7 @@ Decoder::Decoder(const char* plugin_id, const nvimgcodecFrameworkDesc_t* framewo
+@@ -320,8 +320,8 @@ Decoder::Decoder(const char* plugin_id, const nvimgcodecFrameworkDesc_t* framewo
      : plugin_id_(plugin_id)
      , framework_(framework)
      , exec_params_(exec_params)
 -    , nvtiffDecodeImageExAvailable_(nvtiffIsSymbolAvailable("nvtiffDecodeImageEx"))
+-    , nvtiffStreamParseExAvailable_(nvtiffIsSymbolAvailable("nvtiffStreamParseEx"))
 +    , nvtiffDecodeImageExAvailable_(true)
++    , nvtiffStreamParseExAvailable_(true)
  {
      auto executor = exec_params_->executor;
      int num_threads = executor->getNumThreads(executor->instance);
--- 
-2.47.1.windows.2
+--
+2.53.0
 
