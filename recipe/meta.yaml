@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-{% set version = "0.8.0" %}
+{% set version = "0.9.0" %}
 
 package:
   name: nvimgcodec
@@ -21,11 +21,9 @@ source:
   url: https://github.com/NVIDIA/nvImageCodec/archive/refs/tags/v{{ version }}.tar.gz
   sha256: d3beeb09fbecd0ff24800a6549d8edb7739cf1d44554f9c92ee31a0cf8d4890b
   patches:
-    - patches/0001-BLD-Use-only-dynamic-shared-library-links-to-CUDA-ta.patch
-    - patches/0002-BLD-Move-CMake-config-install-directory.patch
-    - patches/0003-BLD-Make-find_package-OpenCV-verbose-and-required.patch
-    - patches/0004-BLD-Disable-non-standard-CUDA-arch-checking.patch
-    - patches/0005-BUG-Skip-runtime-nvtiff-check-when-linking-at-build-.patch
+    - patches/0001-BLD-Move-CMake-config-install-directory.patch
+    - patches/0002-BLD-Make-find_package-OpenCV-verbose-and-required.patch
+    - patches/0003-BLD-Disable-non-standard-CUDA-arch-checking.patch
 
 build:
   number: 1
