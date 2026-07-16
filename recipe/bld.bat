@@ -55,11 +55,6 @@ cmake --install .
 
 if errorlevel 1 exit 1
 
-@REM copy in CMakeLists doesn't work for unknown reason
-move .\python\*.pyd .\python\nvidia\nvimgcodec\
-
-if errorlevel 1 exit 1
-
 %PYTHON% -m pip install --no-deps --no-build-isolation -v %SRC_DIR%/build/python
 
 if errorlevel 1 exit 1

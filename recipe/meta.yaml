@@ -21,6 +21,7 @@ source:
   url: https://github.com/NVIDIA/nvImageCodec/archive/refs/tags/v{{ version }}.tar.gz
   sha256: cd92bec0c5293685233d88840d63383b22eaf04a12167308fe3c7c6087ff40f7
   patches:
+    - patches/0001-BLD-Set-RUNTIME_OUTPUT_DIRECTORY-for-Python-.pyd-tar.patch
     - patches/0002-BLD-Make-find_package-OpenCV-verbose-and-required.patch
     - patches/0003-BLD-Disable-non-standard-CUDA-arch-checking.patch
 
