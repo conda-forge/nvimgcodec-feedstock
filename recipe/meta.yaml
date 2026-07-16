@@ -19,9 +19,8 @@ package:
 
 source:
   url: https://github.com/NVIDIA/nvImageCodec/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: d3beeb09fbecd0ff24800a6549d8edb7739cf1d44554f9c92ee31a0cf8d4890b
+  sha256: cd92bec0c5293685233d88840d63383b22eaf04a12167308fe3c7c6087ff40f7
   patches:
-    - patches/0001-BLD-Move-CMake-config-install-directory.patch
     - patches/0002-BLD-Make-find_package-OpenCV-verbose-and-required.patch
     - patches/0003-BLD-Disable-non-standard-CUDA-arch-checking.patch
 
