@@ -1,0 +1,25 @@
+From a3bae2358273a0d2ef6ac34f858e525e6fd9ba5c Mon Sep 17 00:00:00 2001
+From: Daniel Ching <dching@nvidia.com>
+Date: Thu, 16 Jul 2026 16:57:41 -0500
+Subject: [PATCH] BLD: Set RUNTIME_OUTPUT_DIRECTORY for Python .pyd targets on
+ Windows
+
+---
+ cmake/Utils.cmake | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/cmake/Utils.cmake b/cmake/Utils.cmake
+index b6603e1c..2c0cd76e 100644
+--- a/cmake/Utils.cmake
++++ b/cmake/Utils.cmake
+@@ -222,6 +222,7 @@ function(build_per_python_lib)
+             else()
+                 set_target_properties(${PYTHON_LIB_TARGET_FOR_PYVER}
+                                         PROPERTIES
++                                        RUNTIME_OUTPUT_DIRECTORY ${PYTHON_LIB_ARG_OUTPUT_DIR}
+                                         LIBRARY_OUTPUT_DIRECTORY ${PYTHON_LIB_ARG_OUTPUT_DIR}
+                                         PREFIX "${PYTHON_LIB_ARG_PREFIX}"
+                                         OUTPUT_NAME ${PYTHON_LIB_ARG_OUTPUT_NAME}${PYTHON_SUFFIX}
+--
+2.52.0.windows.1
+

@@ -1,0 +1,25 @@
+From 10ea40739b45deac06de251a7ca04b9a9814141d Mon Sep 17 00:00:00 2001
+From: Daniel Ching <dching@nvidia.com>
+Date: Mon, 12 May 2025 17:05:57 -0500
+Subject: [PATCH 2/3] BLD: Make find_package(OpenCV) verbose and required
+
+---
+ cmake/Dependencies.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
+index 2e274202..d5052544 100644
+--- a/cmake/Dependencies.cmake
++++ b/cmake/Dependencies.cmake
+@@ -186,7 +186,7 @@ if (NOT DEFINED OpenCV_VERSION AND (BUILD_OPENCV_EXT OR BUILD_TEST))
+     if (WIN32)
+         set(OpenCV_STATIC ON)
+     endif()
+-    find_package(OpenCV 4.9 QUIET COMPONENTS core imgproc imgcodecs)
++    find_package(OpenCV 4.9 COMPONENTS core imgproc imgcodecs REQUIRED)
+ 
+     if(NOT OpenCV_FOUND)
+         message(STATUS "OpenCV not found - disabled")
+-- 
+2.54.0
+

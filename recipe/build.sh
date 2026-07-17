@@ -44,10 +44,23 @@ nvimg_build_args=(
     -DBUILD_LIBRARY:BOOL=OFF
     -DBUILD_SHARED_LIBS:BOOL=ON
     -DBUILD_STATIC_LIBS:BOOL=OFF
-# "DYNAMIC_LINK" means using dlopen, but we want to link to shared libraries?
+    -DNVIMGCODEC_INSTALL_LIBDIR:PATH=lib
+    -DNVIMGCODEC_INSTALL_BINDIR:PATH=lib
+# "DYNAMIC_LINK" means using dlopen, but we want to link to shared libraries.
     -DWITH_DYNAMIC_LINK:BOOL=OFF
+    -DWITH_SHARED_CUDA_LIBS:BOOL=ON
+# Stay inside the conda env: ignore /usr/local so find_package() doesn't pick
+# up system installs (e.g. a system TIFF config that drags /usr/local/include
+# into the global system include path).
+    -DCMAKE_IGNORE_PREFIX_PATH=/usr/local
+# The system package installs an absolute /etc/ld.so.conf.d drop-in. Conda
+# packages rely on rpaths and package metadata instead, and must not write
+# outside the build prefix during cmake --install.
+    -DNVIMGCODEC_INSTALL_LD_SO_CONF:BOOL=OFF
 # Extension args
     -DBUILD_EXTENSIONS:BOOL=OFF
+    -DNVIMGCODEC_INSTALL_EXTENSIONS_DIR:PATH=lib/extensions
+    -DNVIMGCODEC_INSTALL_EXTENSION_LIBDIR:PATH=lib/extensions
 # Python args
     -DBUILD_PYTHON:BOOL=ON
     -DPYTHON_VERSIONS="${PY_VER}"
