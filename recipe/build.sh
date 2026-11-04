@@ -80,7 +80,7 @@ cmake --install . --strip
 
 # When cross-compiling, the python modules are named incorrectly, so we have to
 # fix the name.
-if [[ "$target_platform" == "linux-aarch64" ]]; then
+if [[ "$target_platform" == "linux-aarch64" && "${CONDA_BUILD_CROSS_COMPILATION:-0}" == "1" ]]; then
   for file in "${SRC_DIR}"/build/python/nvidia/nvimgcodec/*cpython-*-x86_64-linux-gnu.so; do
     newname="${file/x86_64/aarch64}"
     mv "$file" "$newname"
