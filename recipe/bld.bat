@@ -35,9 +35,10 @@ set NVIMG_EXT_ARGS= ^
 
 set PYVER_NODOT=%PY_VER:.=%
 
-REM Python 3.15+ on Windows moved headers from include\ to include\python\
-set PYTHON_INCLUDE_ARGS=
-if exist "%PREFIX%\include\python\Python.h" set PYTHON_INCLUDE_ARGS=-DPython%PYVER_NODOT%_INCLUDE_DIR:PATH=%PREFIX%\include\python
+REM Python 3.15+ on Windows moved headers from include\ to include\python\.
+REM Upstream FindPython hardcodes <root>/include on Windows, so add the new
+REM location to the MSVC header search path instead.
+if exist "%PREFIX%\include\python\Python.h" set "INCLUDE=%PREFIX%\include\python;%INCLUDE%"
 
 set NVIMG_PYTHON_ARGS= ^
     -DBUILD_PYTHON:BOOL=ON ^
@@ -46,8 +47,7 @@ set NVIMG_PYTHON_ARGS= ^
     -DNVIMGCODEC_COPY_LIBS_TO_PYTHON_DIR:BOOL=OFF ^
     -DNVIMGCODEC_BUILD_PYBIND11:BOOL=OFF ^
     -DNVIMGCODEC_BUILD_DLPACK:BOOL=OFF^
-    -DPython%PYVER_NODOT%_ROOT_DIR=%PREFIX% ^
-    %PYTHON_INCLUDE_ARGS%
+    -DPython%PYVER_NODOT%_ROOT_DIR=%PREFIX%
 
 cmake %CMAKE_ARGS% -GNinja -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
     %NVIMG_BUILD_ARGS% %NVIMG_LIBRARY_ARGS% %NVIMG_EXT_ARGS% ^
