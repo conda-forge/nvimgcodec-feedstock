@@ -35,6 +35,11 @@ set NVIMG_EXT_ARGS= ^
 
 set PYVER_NODOT=%PY_VER:.=%
 
+REM Python 3.15+ on Windows moved headers from include\ to include\python\.
+REM Upstream FindPython hardcodes <root>/include on Windows, so add the new
+REM location to the MSVC header search path instead.
+if exist "%PREFIX%\include\python\Python.h" set "INCLUDE=%PREFIX%\include\python;%INCLUDE%"
+
 set NVIMG_PYTHON_ARGS= ^
     -DBUILD_PYTHON:BOOL=ON ^
     -DPYTHON_VERSIONS=%PY_VER% ^
