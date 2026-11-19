@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-{% set version = "0.10.0" %}
+{% set version = "0.10.1" %}
 
 package:
   name: nvimgcodec
@@ -19,14 +19,14 @@ package:
 
 source:
   url: https://github.com/NVIDIA/nvImageCodec/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: d36466e2366585795ecd967c9e8eb62618eb155e6030a9b0f2c3274f260a14f0
+  sha256: 14052bc12951646fc94adbc856ce206c8df89f89a476bb1f15d23bb0f0e829b9
   patches:
     - patches/0003-BLD-Set-RUNTIME_OUTPUT_DIRECTORY-for-Python-.pyd-tar.patch
     - patches/0001-BLD-Make-find_package-OpenCV-verbose-and-required.patch
     - patches/0002-BLD-Disable-non-standard-CUDA-arch-checking.patch
 
 build:
-  number: 1
+  number: 0
   skip: true  # [cuda_compiler_version in (undefined, 'None')]
   # Debug skips below
   # skip: true  # [py != 312]
